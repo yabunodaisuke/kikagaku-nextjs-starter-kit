@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Todo {
     name:string;
     description?:string;
@@ -6,8 +8,8 @@ interface Todo {
 
 
 const TodoTable: React.FC = () => {
-    
-    const todos:Todo[] = [
+
+    const initialTodos:Todo[] = [
         {
         name: 'task1',
         description: 'this is task1',
@@ -24,9 +26,19 @@ const TodoTable: React.FC = () => {
              name: 'task3',
              description: 'this is task3',
              isCompleted: false,
-                },
+                },   
 
     ];
+    
+const [todos, setTodos] = useState<Todo[]>(initialTodos);
+   
+
+    const handleClick =() => {
+        //pushだと追加はするが、表示がされない
+        // todos.push({ name: 'task4', isCompleted: false});
+        
+        setTodos([...todos, {name: 'task4', isCompleted: false}]);
+    }
 
 
 return ( 
@@ -55,6 +67,9 @@ return (
     </tbody>
 
 </table>
+<button　
+onClick = {handleClick}
+className='bg-primary-800 text-white px-4 py-2 mt-10 rounded hover:opacity-70'>追加</button>
 </div>
 );
 };
