@@ -1,4 +1,35 @@
-const TodoTable: React.FC = () => (
+interface Todo {
+    name:string;
+    description?:string;
+    isCompleted?:boolean;
+}
+
+
+const TodoTable: React.FC = () => {
+    
+    const todos:Todo[] = [
+        {
+        name: 'task1',
+        description: 'this is task1',
+        isCompleted: false,
+        },
+
+        {
+            name: 'task2',
+            description: 'this is task2',
+            isCompleted: true,
+            },
+        
+         {
+             name: 'task3',
+             description: 'this is task3',
+             isCompleted: false,
+                },
+
+    ];
+
+
+return ( 
 <div>
 <h1　className="font-bold tracking-wider text-primary-800">To do 一覧</h1>
 <table className="rounded overflow-hidden">
@@ -10,21 +41,21 @@ const TodoTable: React.FC = () => (
         </tr>
     </thead>
     <tbody>
-        <tr className="hover:bg-primary-100 bg-white">
-            <th className='pty-2 px-4'>Status</th>
-            <th className='pty-2 px-4'>Name</th>
-            <th className='pty-2 px-4'>Description</th>
+        {todos.map((todo, index) => ( 
+            <tr className="hover:bg-primary-100 bg-white" key={index}>
+            <td className='pty-2 px-4'>
+                <input type='checkbox' defaultChecked={todo.isCompleted} className='rounded text-primary-800'/>
+                </td>
+            <td className='pty-2 px-4'>{todo.name}</td>
+            <td className='pty-2 px-4'>{todo.description}</td>
         </tr>
-
-        <tr className="hover:bg-primary-100 bg-white">
-            <th className='pty-2 px-4'>Status</th>
-            <th className='pty-2 px-4'>Name</th>
-            <th className='pty-2 px-4'>Description</th>
-        </tr>
+        
+))}
+       
     </tbody>
 
 </table>
 </div>
-
-    );
+);
+};
 export {TodoTable};
