@@ -29,17 +29,29 @@ const TodoTable: React.FC = () => {
                 },   
 
     ];
+    //空にするため
+    const initialFormState = {
+        name: '',
+        description: '',
+        isCompleted: false,
+    }
     
 const [todos, setTodos] = useState<Todo[]>(initialTodos);
-   
+const [formState, setformState] = useState<Todo>(initialFormState);
 
     const handleClick =() => {
         //pushだと追加はするが、表示がされない
         // todos.push({ name: 'task4', isCompleted: false});
-        
-        setTodos([...todos, {name: 'task4', isCompleted: false}]);
+        if (formState.name=='') return;
+        setTodos([...todos, {...formState, isCompleted: false}]);
+        //入力後に空にしている
+        setformState(initialFormState);
     }
-
+    const handleInput =(key:string,value:string):void => {
+       
+        setformState({...formState, [key]: value})
+    
+    }
 
 return ( 
 <div>
@@ -67,9 +79,27 @@ return (
     </tbody>
 
 </table>
+<div className="mt-10 grid gap-y-4">
+    <input type-='text' className="bg-white border border-primary-500 placeholder:text-primary-200" placeholder="Name"
+     value={formState?.name}
+     onChange={(e) => handleInput('name', e.target.value)}
+    />
+    {/* <input type-='text' /> */}
+   
+</div>
+
+<div className="mt-10 grid gap-y-4">
+    <input type-='text' className="bg-white border border-primary-500 placeholder:text-primary-200" placeholder="Description"
+     value={formState?.description}
+     onChange={(e) => handleInput('description', e.target.value)}
+    />
+   
+    {/* <input type-='text' /> */}
+</div>
+
 <button　
 onClick = {handleClick}
-className='bg-primary-800 text-white px-4 py-2 mt-10 rounded hover:opacity-70'>追加</button>
+className='bg-primary-800 text-white px-4 py-2 mt-10 rounded hover:opacity-70'>+新規追加</button>
 </div>
 );
 };
