@@ -77,6 +77,15 @@ const [editIndex, setEditIndex] = useState<number>(initialEditIndex);
        
     }
 
+
+    const handleDelete = (index:number) => {
+        if(!confirm('本当に削除しますか？')) return;
+        const updateTodos = [...todos];
+        // updateTodos.splice(index, 1);
+        
+        setTodos(updateTodos);
+    }
+
 return ( 
 <div>
 <h1　className="font-bold tracking-wider text-primary-800">To do 一覧</h1>
@@ -87,6 +96,7 @@ return (
             <th className="py-2 px-4">Name</th>
             <th className="py-2 px-4">Description</th>
             <th className="py-2 px-4">Edit</th>
+            <th className="py-2 px-4">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -99,6 +109,8 @@ return (
             <td className='pty-2 px-4'>{todo.description}</td>
             <td className='pty-2 px-4　'>
                 <button onClick={() => handleIsEdit(todo, index)} className="text-primary-800 underline">編集</button></td>
+                <td className='pty-2 px-4　'>
+                <button onClick={() => handleDelete(index)} className="text-pink-800 underline">削除</button></td>   
         </tr>
         
 ))}
