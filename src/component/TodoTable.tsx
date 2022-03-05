@@ -35,11 +35,15 @@ const TodoTable: React.FC = () => {
         description: '',
         isCompleted: false,
     }
-    
+  
+const initialEditIndex = -1;    
+
 const [todos, setTodos] = useState<Todo[]>(initialTodos);
 const [formState, setformState] = useState<Todo>(initialFormState);
+const [isEdit, setIsEdit] = useState<Boolean>(false);
+const [editIndex, setEditIndex] = useState<number>(initialEditIndex);
 
-    const handleClick =() => {
+    const handleCreate =() => {
         //pushだと追加はするが、表示がされない
         // todos.push({ name: 'task4', isCompleted: false});
         if (formState.name=='') return;
@@ -53,6 +57,26 @@ const [formState, setformState] = useState<Todo>(initialFormState);
     
     }
 
+    const handleIsEdit =(todo: Todo, index:number):void => {
+        setformState(todo);
+        //編集する箇所のナンバーを取得している
+        setEditIndex(index);
+        setIsEdit(true);
+        
+    }
+
+    const handleUpdate = () => {
+        if(!formState.name) return;
+        const updateTodos = [...todos];
+        updateTodos [editIndex] = formState;
+        setTodos(updateTodos)
+        //update後にボタンを元に戻す
+        setformState(initialFormState);
+        setEditIndex(initialEditIndex);
+        setIsEdit(false);
+       
+    }
+
 return ( 
 <div>
 <h1　className="font-bold tracking-wider text-primary-800">To do 一覧</h1>
@@ -62,6 +86,7 @@ return (
             <th className="py-2 px-4">Status</th>
             <th className="py-2 px-4">Name</th>
             <th className="py-2 px-4">Description</th>
+            <th className="py-2 px-4">Edit</th>
         </tr>
     </thead>
     <tbody>
@@ -72,6 +97,8 @@ return (
                 </td>
             <td className='pty-2 px-4'>{todo.name}</td>
             <td className='pty-2 px-4'>{todo.description}</td>
+            <td className='pty-2 px-4　'>
+                <button onClick={() => handleIsEdit(todo, index)} className="text-primary-800 underline">編集</button></td>
         </tr>
         
 ))}
@@ -96,10 +123,18 @@ return (
    
     {/* <input type-='text' /> */}
 </div>
+{isEdit ? (
+    <button
+    onClick={handleUpdate}　
+    className='bg-primary-800 text-white px-4 py-2 mt-10 rounded hover:opacity-70'>更新
 
+    </button>
+) : (
 <button　
-onClick = {handleClick}
+onClick = {handleCreate}
 className='bg-primary-800 text-white px-4 py-2 mt-10 rounded hover:opacity-70'>+新規追加</button>
+
+)}
 </div>
 );
 };
