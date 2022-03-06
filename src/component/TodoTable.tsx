@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 
 interface Todo {
     name:string;
@@ -8,27 +8,38 @@ interface Todo {
 
 
 const TodoTable: React.FC = () => {
+    useEffect(() => {
+        // localStorage.setItem('todos', JSON.stringify(initialTodos));
+        // const data = localStorage.getItem('todos');
+       setTodos(fetchTodos());
+    },
+    []);
 
-    const initialTodos:Todo[] = [
-        {
-        name: 'task1',
-        description: 'this is task1',
-        isCompleted: false,
-        },
+const fetchTodos = (): Todo[] => {
+    const data = localStorage.getItem('todos');
+    if (data) return JSON.parse(data) as Todo[];
+    return[];
+};
+    // const initialTodos:Todo[] = [
+    //     {
+    //     name: 'task1',
+    //     description: 'this is task1',
+    //     isCompleted: false,
+    //     },
 
-        {
-            name: 'task2',
-            description: 'this is task2',
-            isCompleted: true,
-            },
+    //     {
+    //         name: 'task2',
+    //         description: 'this is task2',
+    //         isCompleted: true,
+    //         },
         
-         {
-             name: 'task3',
-             description: 'this is task3',
-             isCompleted: false,
-                },   
+    //      {
+    //          name: 'task3',
+    //          description: 'this is task3',
+    //          isCompleted: false,
+    //             },   
 
-    ];
+    // ];
     //空にするため
     const initialFormState = {
         name: '',
@@ -38,7 +49,7 @@ const TodoTable: React.FC = () => {
   
 const initialEditIndex = -1;    
 
-const [todos, setTodos] = useState<Todo[]>(initialTodos);
+const [todos, setTodos] = useState<Todo[]>([]);
 const [formState, setformState] = useState<Todo>(initialFormState);
 const [isEdit, setIsEdit] = useState<Boolean>(false);
 const [editIndex, setEditIndex] = useState<number>(initialEditIndex);
@@ -47,7 +58,9 @@ const [editIndex, setEditIndex] = useState<number>(initialEditIndex);
         //pushだと追加はするが、表示がされない
         // todos.push({ name: 'task4', isCompleted: false});
         if (formState.name=='') return;
-        setTodos([...todos, {...formState, isCompleted: false}]);
+        const updateTodos = [...todos, {...formState, isCompleted: false}];
+        localStorage.setItem('todos', JSON.stringify(updateTodos));
+        setTodos(updateTodos);
         //入力後に空にしている
         setformState(initialFormState);
     }
