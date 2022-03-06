@@ -82,6 +82,8 @@ const [editIndex, setEditIndex] = useState<number>(initialEditIndex);
         if(!formState.name) return;
         const updateTodos = [...todos];
         updateTodos [editIndex] = formState;
+        //更新しても編集した物が残る
+        localStorage.setItem('todos', JSON.stringify(updateTodos));
         setTodos(updateTodos)
         //update後にボタンを元に戻す
         setformState(initialFormState);
@@ -94,8 +96,8 @@ const [editIndex, setEditIndex] = useState<number>(initialEditIndex);
     const handleDelete = (index:number) => {
         if(!confirm('本当に削除しますか？')) return;
         const updateTodos = [...todos];
-        // updateTodos.splice(index, 1);
-        
+        updateTodos.splice(index, 1);
+        localStorage.setItem('todos', JSON.stringify(updateTodos));
         setTodos(updateTodos);
     }
 
